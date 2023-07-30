@@ -1,13 +1,19 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 3001;
+// app.js
 
-app.get("/", (req, res) => res.type('html').send(html));
+var express = require('express')
+var Unblocker = require('unblocker');
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+// Create Express Server
+var app = express();
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+// Create Unblocker Instance, and Configure Our Express Server to Use It
+var unblocker = new Unblocker({ prefix: '/proxy/' });
+app.use(unblocker);
+
+
+// Launches Server on Port 8080
+app.listen(process.env.PORT || 8080).on('upgrade', unblocker.onUpgrade);
+console.log("Node Unblocker Server Running On Port:", process.env.PORT || 8080)
 
 const html = `
 <!DOCTYPE html>
